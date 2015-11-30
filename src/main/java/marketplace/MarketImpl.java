@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceUnit;
 
 
 
@@ -60,9 +64,19 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         return out;
     }
     
-    //implements interface
+    //implements interface //TODO ta emot password i inparametern
     @Override
     public synchronized TraderAcc newTraderAcc(String name) throws RemoteException, RejectedException {
+        
+        EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("market"); // koppling till vårt "persistence unit name"
+        
+        //TODO lägg till kontroller för att se om användarnamnet är taget 
+        
+        EntityManager em  = emFactory.createEntityManager(); // (hämtar en instans koppling till databasen) entitymanager behövs för att för persista data till databasen
+        em.getTransaction().begin(); //Startar transaktion
+            em.persist(new UserDAO(name, name)); //Lägger till fält i userdao tabellen
+        em.getTransaction().commit(); //utför ändringar 
+
         
     	//Account exists
         for(TraderAcc t : traderaccs){
