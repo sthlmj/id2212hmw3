@@ -27,6 +27,13 @@ public class BankImpl extends UnicastRemoteObject implements Bank {
         return accounts.keySet().toArray(new String[1]);
     }
 
+    /**
+     * TODO: See if need to modify this.
+     * Creates an entity for the newAccount method. ID2212 exercise 3, slide 60
+     * @param name
+     * @return
+     * @throws RejectedException 
+     */
     @Override
     public synchronized Account newAccount(String name) throws RemoteException,
                                                                RejectedException {

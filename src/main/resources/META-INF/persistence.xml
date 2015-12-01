@@ -13,3 +13,5 @@
     </properties>
   </persistence-unit>
 </persistence>
+
+<!-- TODO Check the hw3 requirements, specifically objective section if need to change to MySQL. Drop-and-create only drops and creates when re-building the project. >
