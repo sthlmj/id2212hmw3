@@ -11,6 +11,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * TODO: implement myActivities command that shows users activities(sold products, bought products, his balance)
+ * @author Mook
+ */
 public class MClient {
 
     private static final String USAGE = "java MClient <market_rmi_url>";
@@ -22,7 +26,7 @@ public class MClient {
 
     //enum lists of commands available
     static enum CommandName {
-        sell, buy, wish, listProducts, listTraderAccs, newTraderAcc, getTraderAcc, deleteTraderAcc, quit, help;
+        sell, buy, wish, listProducts, listTraderAccs, newTraderAcc, getTraderAcc, deleteTraderAcc, myActivities, quit, help;
     };
 
     //Konstruktor 2
