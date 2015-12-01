@@ -84,9 +84,13 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         EntityManager em  = emFactory.createEntityManager(); // (hämtar en instans koppling till databasen) entitymanager behövs för att för persista data till databasen
         
         em.getTransaction().begin(); //Startar transaktion. EntityManager Usage. At transaction start.
+            
             UserDAO user = new UserDAO(name,name);
-            //ItemDAO item = new ItemDAO("bil", 200);
+           // ItemDAO item = new ItemDAO("bil", 200);
+            //ItemDAO item2 = new ItemDAO("bil", 200);
            // user.addItem(item);
+           // user.addItem(item2);
+           
             em.persist(user); //Lägger till fält i UserDAO tabellen. EntityManager Usage. 
         em.getTransaction().commit(); //utför ändringar. EntityManager Usage. At transcation commit.
 
