@@ -26,7 +26,7 @@ public class MClient {
 
     //enum lists of commands available
     static enum CommandName {
-        sell, buy, wish, listProducts, listTraderAccs, newTraderAcc, getTraderAcc, deleteTraderAcc, myActivities, quit, help;
+        sell, buy, wish, listProducts, listTraders, newTrader, getTrader, deleteTrader, myActivities, quit, help;
     };
 
     //Konstruktor 2
@@ -134,9 +134,9 @@ public class MClient {
 
         //Single commands
         switch (command.getCommandName()) {
-            case listTraderAccs: //TODO: Rename from list to listTraderAccs
+            case listTraders:
                 try {
-                    for (String accountHolder : market.listTraderAccs()) {
+                    for (String accountHolder : market.listTraders()) {
                         System.out.println(accountHolder);
                     }
                 } catch (Exception e) {
@@ -167,19 +167,19 @@ public class MClient {
         
         //implementerar command
         switch (command.getCommandName()) {
-            case newTraderAcc:
+            case newTrader:
                 mclientname = userName;
                 
-                market.newTraderAcc(command.getName());
+                market.newTrader(command.getName());
                 return;
-            case deleteTraderAcc:
+            case deleteTrader:
                 mclientname = userName;
-                market.deleteTraderAcc(command.getName());
+                market.deleteTrader(command.getName()); //binds to merketimpl.
                 return;
         }
 
         // all further commands require a Account reference
-        TraderAcc acc = market.getTraderAcc(userName);
+        TraderAcc acc = market.getTrader(userName);
         TraderAcc in = (TraderAcc) UnicastRemoteObject.exportObject(acc,0);
        
         if (acc == null) {
@@ -192,8 +192,8 @@ public class MClient {
 
         //Commands
         switch (command.getCommandName()) {
-            case getTraderAcc:
-                acc = market.getTraderAcc(command.getName());
+            case getTrader:
+                acc = market.getTrader(command.getName());
                 mclientname = acc.getName();
                 break;
             case sell:

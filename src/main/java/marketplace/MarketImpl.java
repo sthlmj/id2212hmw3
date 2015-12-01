@@ -17,14 +17,24 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 
-/**
- * TODO: Change db creation strategy. Currently it drops everything in the database when server is stopped.  
- * TODO: Make bank db persistent for account and balance. 
+/**  
+ * TODO: Make BANK db persistent for account and balance. 
  * TODO: Make buy function persistent so it saves counts for sold and bought products.
  * TODO: Make password length requirements and persistent.
  * TODO: Make an "Activity Indicator" that lists sold and bought items.
- * TODO: Make new Command for activitiy indicator. 
- * TODO: Make newTraderAcc so that it rejects already tagen user names. 
+ * TODO: Make new Command myActivities for activity indicator. 
+ * TODO: Make newTrader so that it rejects already taken user names. 
+        sell                    OK 
+        buy                     TODO
+        wish                    TODO
+        listProducts            OK
+        listTraders             OK
+        newTrader               OK
+        getTrader               OK
+        deleteTrader            OK
+        myActivities            TODO
+        quit                    OK
+        help                    OK
  */
 
 /**
@@ -66,7 +76,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     
     //implements interface. TODO check if it works.
     @Override
-    public synchronized String[] listTraderAccs() {
+    public synchronized String[] listTraders() {
     	
         
         EntityManager em = this.emFactory.createEntityManager();
@@ -104,7 +114,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      * TODO ta emot password i inparametern
      */
     @Override
-    public synchronized TraderAcc newTraderAcc(String name) throws RemoteException, RejectedException {
+    public synchronized TraderAcc newTrader(String name) throws RemoteException, RejectedException {
         
         
         
@@ -155,7 +165,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      */
     //implements interface
     @Override
-    public synchronized TraderAcc getTraderAcc(String name) throws RejectedException {
+    public synchronized TraderAcc getTrader(String name) throws RejectedException {
    
         
         EntityManager em = this.emFactory.createEntityManager();
@@ -191,7 +201,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     
     //implements interface. TODO Check if it works.
     @Override
-    public synchronized boolean deleteTraderAcc(String name) {
+    public synchronized boolean deleteTrader(String name) {
         
         EntityManager em = this.emFactory.createEntityManager();
         

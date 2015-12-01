@@ -10,13 +10,13 @@ import javax.persistence.EntityManager;
  */
 public interface Market extends Remote {    
     
-    public String[] listTraderAccs() throws RemoteException; 
+    public String[] listTraders() throws RemoteException; 
         
-    public TraderAcc newTraderAcc(String name) throws RemoteException, RejectedException;
+    public TraderAcc newTrader(String name) throws RemoteException, RejectedException;
     
-    public TraderAcc getTraderAcc(String name) throws RemoteException,RejectedException;
+    public TraderAcc getTrader(String name) throws RemoteException,RejectedException;
     
-    public boolean deleteTraderAcc(String name) throws RemoteException;
+    public boolean deleteTrader(String name) throws RemoteException;
     
     public void sell(Item item) throws RemoteException;
     
