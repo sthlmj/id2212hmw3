@@ -23,11 +23,12 @@ public class ItemDAO {
     private String name;
 
     //Attributes for item entity.
-    @Column(name = "name", nullable = false)
+    @Column(name = "price", nullable = false)
     private float price;
     
     //Attributes for item entity.
-    @Column(name = "name", nullable = true)
+    @Column(name = "amount", nullable = true)
+
     private int amount;
     
     //TODO: Ta bort? 
