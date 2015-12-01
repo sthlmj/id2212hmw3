@@ -117,7 +117,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         } catch (RemoteException e) {
                 e.printStackTrace();
         }
-    	 throw new RejectedException("Account " + name + "does not exist");
+    	 throw new RejectedException("Account " + name + " does not exist");
     }
 
     //implements interface
