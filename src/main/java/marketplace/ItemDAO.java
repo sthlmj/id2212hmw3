@@ -23,11 +23,11 @@ public class ItemDAO {
     private String name;
 
     //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
-    @Column(name = "name", nullable = false)
+    @Column(name = "price", nullable = false)
     private float price;
     
     //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
-    @Column(name = "name", nullable = true)
+    @Column(name = "amount", nullable = true)
     private int amount;
     
     //TODO: Ta bort? 
