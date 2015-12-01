@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 //db table(entity) for item. Entity definition.
 @Entity(name = "item")
-public class ItemDAO {
+public class ItemDAO implements Serializable {
  
     //Attributes for item entity.
     @Id
@@ -30,7 +30,16 @@ public class ItemDAO {
     @Column(name = "amount", nullable = true)
     private int amount;
     
+    @JoinColumn(name = "owner", nullable = true)
     private UserDAO owner;
+    /*@ManyToOne
+    private UserDAO owner;*/
+    
+    @ManyToOne
+    @JoinColumn(name="id", nullable=false)
+    public UserDAO getUserDAO(){
+        return owner;
+    }
     
     public ItemDAO()
     {
@@ -50,10 +59,7 @@ public class ItemDAO {
       this.amount = amount;
     }
     
-    @ManyToOne
-    public UserDAO getUser() {
-        return owner;
-    }
+   
     
     
     //Entity, business logic.

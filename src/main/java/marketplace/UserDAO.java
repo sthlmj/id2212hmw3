@@ -1,8 +1,10 @@
 
 package marketplace;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,7 +17,7 @@ import javax.persistence.OneToMany;
 
 //db table(entity) for userdao. Entity definition.
 @Entity(name="userdao")
-public class UserDAO {
+public class UserDAO implements Serializable {
     
     //Attributes for item entity.
     @Id
@@ -34,9 +36,15 @@ public class UserDAO {
     @Column(name = "itemSold", nullable = false)
     private int itemSold = 0;
     
-    /*@OneToMany(mappedBy="userdao")
+   
+    @OneToMany(cascade=ALL,mappedBy="owner")
     private Collection<ItemDAO> items = new HashSet();
-*/
+    
+    
+    public Collection<ItemDAO> getItems() {
+        return items;
+    }
+
    
     
     public UserDAO()
@@ -52,9 +60,7 @@ public class UserDAO {
 
     
     
-    /*public Collection<ItemDAO> getItems() {
-        return items;
-    }
+   
    
     public void setItems(Collection<ItemDAO> items) {
         this.items = items;
@@ -63,7 +69,7 @@ public class UserDAO {
     public void addItem(ItemDAO item){
         this.items.add(item);
     }
-    */
+    
     
     //Entity, business logic.
     public String getName() {
