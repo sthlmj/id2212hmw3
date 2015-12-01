@@ -212,11 +212,16 @@ public class MClient {
                     System.out.println(str);
                 }
                 break; 
-            case myActivities: //TODO Gustav verify this. Tried to implement itemBought and itemSold
-                List<String> ma =  market.myActivities();
-                for(String str : ma){
-                    System.out.println(ma);
+            case myActivities:      //TODO: Gustav verify if this could work..
+                try {
+                    for (String activities : market.myActivities()) {
+                        System.out.println(activities);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return;
                 }
+                return;
             default:
                 System.out.println("Illegal command");
         }
