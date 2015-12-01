@@ -30,7 +30,7 @@ public class ItemDAO implements Serializable {
     @Column(name = "amount", nullable = true)
     private int amount;
     
-    @Column(name = "owner", nullable = true)
+    @JoinColumn(name = "owner", nullable = true)
     private UserDAO owner;
     /*@ManyToOne
     private UserDAO owner;*/
