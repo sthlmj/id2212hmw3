@@ -103,11 +103,23 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         return traderacc;
     }
     
+    @Override
+    public synchronized TraderAcc findAccount(String userName) throws RemoteException, RejectedException {
+        
+    }
+    
+    
+    /**
+     * Get DB Trader Account
+     * @param name
+     * @return
+     * @throws RejectedException 
+     */
     //implements interface
     @Override
     public synchronized TraderAcc getTraderAcc(String name) throws RejectedException {
-    
-        try {
+
+    try {
                 for(TraderAcc t : traderaccs){
                      if(t.getName().equals(name)){ //account found
                         return t;  
@@ -119,7 +131,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }
     	 throw new RejectedException("Account " + name + " does not exist");
     }
-
+    
     //implements interface
     @Override
     public synchronized boolean deleteTraderAcc(String name) {
@@ -197,4 +209,5 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }
         items.add(item);
     }
-}    
+
+}

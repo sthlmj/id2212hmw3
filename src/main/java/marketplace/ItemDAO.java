@@ -57,6 +57,7 @@ public class ItemDAO {
     
     
     //Entity, business logic.
+    @Id
     public Long getItemId() {
         return itemId;
     }

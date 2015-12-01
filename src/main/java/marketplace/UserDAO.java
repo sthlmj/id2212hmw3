@@ -39,7 +39,6 @@ public class UserDAO {
 */
    
     
-    //TODO: Ta bort? 
     public UserDAO()
     {
         

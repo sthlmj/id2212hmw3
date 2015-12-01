@@ -3,6 +3,7 @@ package marketplace;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import javax.persistence.EntityManager;
 /**
  * This is the market interface.
  * @author joehulden
@@ -12,6 +13,9 @@ public interface Market extends Remote {
     public String[] listTraderAccs() throws RemoteException; 
         
     public TraderAcc newTraderAcc(String name) throws RemoteException, RejectedException;
+    
+    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
+    public Account findAccount(String userName) throws RemoteException;
     
     public TraderAcc getTraderAcc(String name) throws RemoteException,RejectedException;
     
