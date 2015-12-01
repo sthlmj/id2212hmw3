@@ -22,21 +22,13 @@ public class ItemDAO {
     @Column(name = "name", nullable = false)
     private String name;
 
-<<<<<<< HEAD
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
+    //Attributes for item entity.
     @Column(name = "price", nullable = false)
     private float price;
     
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
+    //Attributes for item entity.
     @Column(name = "amount", nullable = true)
-=======
-    //Attributes for item entity.
-    @Column(name = "name", nullable = false)
-    private float price;
-    
-    //Attributes for item entity.
-    @Column(name = "name", nullable = true)
->>>>>>> joes-branch
+
     private int amount;
     
     //TODO: Ta bort? 
