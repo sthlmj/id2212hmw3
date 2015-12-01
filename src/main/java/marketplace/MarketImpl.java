@@ -56,7 +56,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }
     }
     
-    //implements interface
+    //implements interface. TODO check if it works.
     @Override
     public synchronized String[] listTraderAccs() {
     	
@@ -140,7 +140,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     }
     
     /**
-     * Get DB Trader Account
+     * Get DB Trader Account. This is working.
      * @param name
      * @return
      * @throws RejectedException 
@@ -148,11 +148,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     //implements interface
     @Override
     public synchronized TraderAcc getTraderAcc(String name) throws RejectedException {
-<<<<<<< HEAD
-
-    try {
-=======
-    
+   
         
         EntityManager em = this.emFactory.createEntityManager();
         
@@ -173,7 +169,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         throw new RejectedException("Account " + name + "does not exist");
        /* 
         try {
->>>>>>> master
                 for(TraderAcc t : traderaccs){
                      if(t.getName().equals(name)){ //account found
                         return t;  
@@ -186,7 +181,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         
     }
     
-    //implements interface
+    //implements interface. TODO Check if it works.
     @Override
     public synchronized boolean deleteTraderAcc(String name) {
         
@@ -219,7 +214,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         return false;*/
     }
 
-    //list all products available on the market.
+    //list all products available on the market. This is working.
     @Override
     public List<String> listProducts() throws RemoteException {
         List <String> out = new ArrayList<>();
@@ -279,7 +274,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
 		wishlist.add(item);
     }
 
-    //implements interface
+    //implements interface. This is working.
     @Override
     public void sell(Item item) throws RemoteException {
         
@@ -307,9 +302,5 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }*/
        // items.add(item);
     }
-<<<<<<< HEAD
-
+    
 }
-=======
-}    
->>>>>>> master
