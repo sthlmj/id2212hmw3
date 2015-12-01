@@ -103,12 +103,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         return traderacc;
     }
     
-    @Override
-    public synchronized TraderAcc findAccount(String userName) throws RemoteException, RejectedException {
-        
-    }
-    
-    
     /**
      * Get DB Trader Account
      * @param name

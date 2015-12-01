@@ -14,9 +14,6 @@ public interface Market extends Remote {
         
     public TraderAcc newTraderAcc(String name) throws RemoteException, RejectedException;
     
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
-    public Account findAccount(String userName) throws RemoteException;
-    
     public TraderAcc getTraderAcc(String name) throws RemoteException,RejectedException;
     
     public boolean deleteTraderAcc(String name) throws RemoteException;
