@@ -28,10 +28,10 @@ public class ItemDAO {
     
     //Attributes for item entity.
     @Column(name = "amount", nullable = true)
-
     private int amount;
     
-    //TODO: Ta bort? 
+    private UserDAO owner;
+    
     public ItemDAO()
     {
         
@@ -49,6 +49,13 @@ public class ItemDAO {
       this.price = price;
       this.amount = amount;
     }
+    
+    @ManyToOne
+    public UserDAO getUser() {
+        return owner;
+    }
+    
+    
     //Entity, business logic.
     public Long getItemId() {
         return itemId;
