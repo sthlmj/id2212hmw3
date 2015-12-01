@@ -4,29 +4,29 @@ package marketplace;
 import javax.persistence.*;
 import java.io.Serializable;
 /**
- * Used to create database tables with JPA
+ * JPA use to create database tables, columns. DAO=Data Access Object
  * @author Joe
  */
 
-//new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
+//db table(entity) for item. Entity definition.
 @Entity(name = "item")
 public class ItemDAO {
  
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
+    //Attributes for item entity.
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itemId;
     
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
+    //Attributes for item entity.
     @Column(name = "name", nullable = false)
     private String name;
 
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
+    //Attributes for item entity.
     @Column(name = "name", nullable = false)
     private float price;
     
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations
+    //Attributes for item entity.
     @Column(name = "name", nullable = true)
     private int amount;
     
@@ -48,40 +48,39 @@ public class ItemDAO {
       this.price = price;
       this.amount = amount;
     }
-
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This creates an object.
+    //Entity, business logic.
     public Long getItemId() {
         return itemId;
     }
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This creates an object.
+    //Entity, business logic.
     public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This creates an object.
+    //Entity, business logic.
     public String getName() {
         return name;
     }
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This creates an object.
+    //Entity, business logic.
     public void setName(String name) {
         this.name = name;
     }
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This creates an object.
+    //Entity, business logic.
     public float getPrice() {
         return price;
     }
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This creates an object.
+    //Entity, business logic.
     public void setPrice(float price) {
         this.price = price;
     }
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This creates an object.
+    //Entity, business logic.
     public int getAmount() {
         return amount;
     }
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This creates an object.
+    //Entity, business logic.
     public void setAmount(int amount) {
         this.amount = amount;
     }
-    //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This creates an object.
+    //Entity, business logic.
     public Long getId() {
         return itemId;
     }
