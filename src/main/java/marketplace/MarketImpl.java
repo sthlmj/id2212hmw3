@@ -17,7 +17,15 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 
-
+/**
+ * TODO: Change db creation strategy. Currently it drops everything in the database when server is stopped.  
+ * TODO: Make bank db persistent for account and balance. 
+ * TODO: Make buy function persistent so it saves counts for sold and bought products.
+ * TODO: Make password length requirements and persistent.
+ * TODO: Make an "Activity Indicator" that lists sold and bought items.
+ * TODO: Make new Command for activitiy indicator. 
+ * TODO: Make newTraderAcc so that it rejects already tagen user names. 
+ */
 
 /**
  * This is the servant class for the Market.java interface.
