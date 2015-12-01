@@ -166,7 +166,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             em.getTransaction().rollback();
             
         }
-        throw new RejectedException("Account " + name + "does not exist");
+        throw new RejectedException("Account " + name + " does not exist");
        /* 
         try {
                 for(TraderAcc t : traderaccs){
@@ -291,6 +291,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             em.persist(user);
             em.getTransaction().commit();
         }
+        
           
 
        /* for(Item it: wishlist) {
