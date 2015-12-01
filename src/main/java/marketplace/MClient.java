@@ -207,12 +207,16 @@ public class MClient {
                 market.wish(new ItemImpl(in,command.getName() , command.getAmount()));
                 break;
             case listProducts: 
-              List<String> l =  market.listProducts();
-              for(String str : l){
-                  System.out.println(str);
-              }
-             break; 
-             
+                List<String> l =  market.listProducts();
+                for(String str : l){
+                    System.out.println(str);
+                }
+                break; 
+            case myActivities: //TODO Gustav verify this. Tried to implement itemBought and itemSold
+                List<String> ma =  market.myActivities();
+                for(String str : ma){
+                    System.out.println(ma);
+                }
             default:
                 System.out.println("Illegal command");
         }

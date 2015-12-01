@@ -24,5 +24,7 @@ public interface Market extends Remote {
     
     public void wish(Item item) throws RemoteException, RejectedException;
     
-    public List<String> listProducts() throws RemoteException;   
+    public List<String> listProducts() throws RemoteException;
+    
+    public String[] myActivities() throws RemoteException; 
 }
