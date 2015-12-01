@@ -247,8 +247,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }
         em.getTransaction().commit();
        
-        
-    	
     	/*for(Item i : items){
             out.add("Name: " + i.name() + " Price: " + i.price());
     	}*/
@@ -320,6 +318,26 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             }  
         }*/
        // items.add(item);
+    }
+
+    //TODO: Gustav verify if this could work..
+    @Override
+    public synchronized String[] myActivities() {
+
+        EntityManager em = this.emFactory.createEntityManager();
+        
+        em.getTransaction().begin();
+        List <Object> activities =  em.createQuery("SELECT a FROM userdao a").getResultList();
+        String[] out = new String[activities.size()];
+        int i = 0;
+        for(Object o : activities  ){
+            if(o instanceof UserDAO){
+                UserDAO t = ((UserDAO) o);
+                out[i++] = t.getName();
+            }
+        }
+        em.getTransaction().commit();
+        return out;
     }
     
 }
