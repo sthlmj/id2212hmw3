@@ -47,7 +47,6 @@ public class UserDAO implements Serializable {
 
    
     
-    //TODO: Ta bort? 
     public UserDAO()
     {
         

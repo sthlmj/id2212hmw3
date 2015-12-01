@@ -3,6 +3,7 @@ package marketplace;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import javax.persistence.EntityManager;
 /**
  * This is the market interface.
  * @author joehulden

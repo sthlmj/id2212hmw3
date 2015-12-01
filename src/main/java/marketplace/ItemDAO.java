@@ -63,6 +63,7 @@ public class ItemDAO implements Serializable {
     
     
     //Entity, business logic.
+    @Id
     public Long getItemId() {
         return itemId;
     }
