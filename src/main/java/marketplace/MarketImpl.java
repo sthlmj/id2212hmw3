@@ -132,7 +132,9 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }
             
         if(em.getTransaction().isActive() ) {
-            
+            if(password == null) {
+                throw new RejectedException("Please provide a password");
+            }
             if(password.length() < 8){
                 throw new RejectedException("Password must be atleast 8 char long");
             }
@@ -314,7 +316,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
        // items.add(item);
     }
 
-    //TODO: Gustav verify if this could work..
+    //implements myActivities interface for bought and sold items.
     @Override
     public synchronized String[] myActivities(String name) throws RejectedException {
 

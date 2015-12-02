@@ -232,7 +232,7 @@ public class MClient {
                     System.out.println(str);
                 }
                 break; 
-            case myActivities:      //TODO: Gustav verify if this could work..
+            case myActivities:
                 try {
                     for (String activities : market.myActivities(mclientname)) {
                         System.out.println(activities);
