@@ -325,9 +325,9 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     public synchronized String[] myActivities() {
 
         EntityManager em = this.emFactory.createEntityManager();
-        
+
         em.getTransaction().begin();
-        List <Object> activities =  em.createQuery("SELECT a FROM userdao a").getResultList();
+        List <Object> activities =  em.createQuery("SELECT itemsold,itembought FROM userdao").getResultList();
         String[] out = new String[activities.size()];
         int i = 0;
         for(Object o : activities  ){
