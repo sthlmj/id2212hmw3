@@ -60,7 +60,12 @@ public class UserDAO implements Serializable {
 
     
     
-   
+   public void incrSoldItems(){
+       this.itemSold++;
+   }
+   public void incrBoughtItems(){
+       this.itemBought++;
+   }
    
     public void setItems(Collection<ItemDAO> items) {
         this.items = items;

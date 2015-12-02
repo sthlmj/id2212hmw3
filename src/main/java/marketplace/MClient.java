@@ -144,6 +144,8 @@ public class MClient {
 
     //kör Command objektet
     void execute(Command command) throws RemoteException, RejectedException {
+        
+         TraderAcc acc = null;
         if (command == null) {
             return;
         }
@@ -195,10 +197,17 @@ public class MClient {
                     mclientname = null;//logout
                 }
                 return;
+                
+            case getTrader:
+                acc = market.getTrader(command.getName(),command.getValue());
+                mclientname = acc.getName();
+                session_password = command.getValue();
+                return;
         }
 
         // all further commands require a Account reference
-        TraderAcc acc = market.getTrader(userName,session_password);
+        
+        acc = market.getTrader(userName,session_password);
         TraderAcc in = (TraderAcc) UnicastRemoteObject.exportObject(acc,0);
        
         if (acc == null) {
@@ -211,11 +220,7 @@ public class MClient {
 
         //Commands
         switch (command.getCommandName()) {
-            case getTrader:
-                acc = market.getTrader(command.getName(),command.getValue());
-                mclientname = acc.getName();
-                session_password = command.getValue();
-                break;
+            
             case sell:
                 System.out.println("acc " + acc);
                market.sell( new ItemImpl(in,command.getName() , command.getAmount()));
