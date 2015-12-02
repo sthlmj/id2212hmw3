@@ -12,9 +12,9 @@ public interface Market extends Remote {
     
     public String[] listTraders() throws RemoteException; 
         
-    public TraderAcc newTrader(String name) throws RemoteException, RejectedException;
+    public TraderAcc newTrader(String name,String password) throws RemoteException, RejectedException;
     
-    public TraderAcc getTrader(String name) throws RemoteException,RejectedException;
+    public TraderAcc getTrader(String name,String password) throws RemoteException,RejectedException;
     
     public boolean deleteTrader(String name) throws RemoteException;
     
@@ -26,5 +26,5 @@ public interface Market extends Remote {
     
     public List<String> listProducts() throws RemoteException;
     
-    public String[] myActivities() throws RemoteException; 
+    public String[] myActivities(String name) throws RemoteException, RejectedException; 
 }
