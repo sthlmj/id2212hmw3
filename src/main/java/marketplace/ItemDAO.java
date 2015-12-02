@@ -59,7 +59,12 @@ public class ItemDAO implements Serializable {
       this.amount = amount;
     }
     
-   
+   //new for hmw3 (Persistence, EntityManagerFactory, EntityManager) annotations. This constructor constructs the following variables.     
+    public ItemDAO (UserDAO owner, String name, float price){
+      this.owner = owner;
+      this.name  = name;
+      this.price = price;
+    }
     
     
     //Entity, business logic.

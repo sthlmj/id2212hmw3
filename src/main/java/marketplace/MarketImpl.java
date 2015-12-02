@@ -252,38 +252,79 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     //implements interface TODO
     @Override
     public Item buy(Item item) throws RemoteException, RejectedException {
-        
+        Item temp = null;
         Account buyer = bank.getAccount(item.trader().getName());
         if(buyer == null) {
             throw new RejectedException("You have no bank account");
         }
+        
+        EntityManager em  = emFactory.createEntityManager(); // (hämtar en instans koppling till databasen) entitymanager behövs för att för persista data till databasen
+        em.getTransaction().begin();  
+        
+        //sök efter matchning
+        List <ItemDAO> items = (List <ItemDAO>) em.createQuery("SELECT i FROM item i WHERE i.name = :name AND i.price = :price")
+                .setParameter("name", item.name()).setParameter("price", item.price()).getResultList();
+        if(items.isEmpty()){
+            throw new RejectedException("Item could not be purchased");
+        }
+        for(ItemDAO i : items){
+            temp = new ItemImpl(i.getName(), i.getPrice());
+            i.getUserDAO().incrSoldItems(); //seller 
+            em.find(UserDAO.class, item.trader().getName()).incrBoughtItems();//Buyer
+            em.remove(i);
+        }
+        em.getTransaction().commit();
+        return temp;
+//uppdatera 
+        
+        
+        
+        
+        /*
+        em.find(UserDAO.class, it.trader().getName()).incrSoldItems();//Seller
+        em.find(UserDAO.class, item.trader().getName()).incrBoughtItems();//Buyer 
+        
+        
             int i = 0;
             for(Item it: items) {
+                
+                //här säljs varan
                 if(it.name().equals(item.name()) && it.price() <= item.price()) {
+                    
+                    EntityManager em  = emFactory.createEntityManager(); // (hämtar en instans koppling till databasen) entitymanager behövs för att för persista data till databasen
+                    em.getTransaction().begin();   
+                    
+                    
                     buyer.withdraw(it.price());
                     bank.getAccount(it.trader().getName()).deposit(it.price());
                     Item temp  = items.remove(i);
                     temp.trader().itemSold(temp);
+                    
+                    em.getTransaction().commit();
                     return temp;
                 }
                 i++;
-            }
-            throw new RejectedException("Item could not be purchased");
+            }*/
+            
     }
 
     //implements interface TODO
     @Override
     public void wish(Item item) throws RemoteException, RejectedException 
     {
-            for(Item it: items) 
-            {
-                if(it.name().equals(item.name()) && it.price() <= item.price()) 
-                {
-                    it.trader().wishMatched(it);
-                    return;
-                }
-            }
-		wishlist.add(item);
+        EntityManager em  = emFactory.createEntityManager();
+        em.getTransaction().begin();
+        List <ItemDAO> items = (List <ItemDAO>) em.createQuery("SELECT i FROM item i WHERE i.name = :name AND i.price = :price")
+                .setParameter("name", item.name()).setParameter("price", item.price()).getResultList();
+        
+        for(ItemDAO i : items){
+            
+           item.trader().wishMatched(new ItemImpl(i.getName(), i.getPrice()));
+           return;
+        }
+        em.getTransaction().commit();
+        wishlist.add(item);
+		
     }
 
     //implements interface. This is working.
@@ -292,6 +333,14 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         
         item.trader().getName();
         
+        for(Item it: wishlist) {
+            
+            //wishMatched
+            if(item.name().equals(it.name())  && item.price() <= it.price()) {
+                it.trader().wishMatched(item);
+            }  
+        }
+        
         EntityManager em = this.emFactory.createEntityManager();
         em.getTransaction().begin();
         UserDAO user  = em.find(UserDAO.class, item.trader().getName());
@@ -299,20 +348,14 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             em.getTransaction().rollback();
         } 
         else {
-            user.addItem(new ItemDAO(item.name(),item.price()));
+            user.addItem(new ItemDAO(user,item.name(),item.price()));
             em.persist(user);
             em.getTransaction().commit();
         }
         
           
 
-       /* for(Item it: wishlist) {
-            
-            //wishMatched
-            if(item.name().equals(it.name())  && item.price() <= it.price()) {
-                it.trader().wishMatched(item);
-            }  
-        }*/
+       
        // items.add(item);
     }
 
