@@ -23,6 +23,7 @@ public class MClient {
     Market market;
     private String marketname;
     String mclientname;
+    String session_password;
 
     //enum lists of commands available
     static enum CommandName {
@@ -87,6 +88,7 @@ public class MClient {
         //Tokenize the inputs
         CommandName commandName = null;
         String userName = null;
+        String token = null;
         float amount = 0;
         int userInputTokenNo = 1;
 
@@ -109,12 +111,26 @@ public class MClient {
                     //word 3
                 case 3:
                     try {
-                        amount = Float.parseFloat(tokenizer.nextToken());
+                        
+                        token = tokenizer.nextToken();
+                        
+                        //dependent on string argument as third
+                        if(commandName == CommandName.newTrader || commandName == CommandName.getTrader){
+                            return new Command(commandName,userName,token);
+                        }
+                        else {
+                           amount = Float.parseFloat(token);
+                           
+                           return new Command(commandName,userName,amount);
+                        }
+ 
                     } catch (NumberFormatException e) {
-                        System.out.println("Illegal amount");
-                        return null;
+                       
+                             System.out.println("Illegal amount");
+                                
+                         return null;
                     }
-                    break;
+                    
                 default:
                     System.out.println("Illegal command");
                     return null;
@@ -168,18 +184,21 @@ public class MClient {
         //implementerar command
         switch (command.getCommandName()) {
             case newTrader:
+                market.newTrader(command.getName(),command.getValue());
                 mclientname = userName;
-                
-                market.newTrader(command.getName());
+                session_password = command.getValue();
                 return;
             case deleteTrader:
                 mclientname = userName;
                 market.deleteTrader(command.getName()); //binds to merketimpl.
+                if(mclientname.equals(command.getName())) {
+                    mclientname = null;//logout
+                }
                 return;
         }
 
         // all further commands require a Account reference
-        TraderAcc acc = market.getTrader(userName);
+        TraderAcc acc = market.getTrader(userName,session_password);
         TraderAcc in = (TraderAcc) UnicastRemoteObject.exportObject(acc,0);
        
         if (acc == null) {
@@ -193,8 +212,9 @@ public class MClient {
         //Commands
         switch (command.getCommandName()) {
             case getTrader:
-                acc = market.getTrader(command.getName());
+                acc = market.getTrader(command.getName(),command.getValue());
                 mclientname = acc.getName();
+                session_password = command.getValue();
                 break;
             case sell:
                 System.out.println("acc " + acc);
@@ -214,12 +234,12 @@ public class MClient {
                 break; 
             case myActivities:      //TODO: Gustav verify if this could work..
                 try {
-                    for (String activities : market.myActivities()) {
+                    for (String activities : market.myActivities(mclientname)) {
                         System.out.println(activities);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    return;
+                    //e.printStackTrace();
+           
                 }
                 return;
             default:
@@ -232,6 +252,11 @@ public class MClient {
         private String name;
         private float amount;
         private CommandName commandName;
+        private String value;
+
+        public String getValue() {
+            return value;
+        }
 
         private String getName() {
             return name;
@@ -250,6 +275,15 @@ public class MClient {
             this.commandName = commandName;
             this.name = userName;
             this.amount = amount;
+        }
+        private Command(MClient.CommandName commandName, String userName, String value) {
+            this.commandName = commandName;
+            this.name = userName;
+            
+            
+            
+            
+            this.value = value;
         }
     }
 

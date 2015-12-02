@@ -114,7 +114,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      * TODO ta emot password i inparametern
      */
     @Override
-    public synchronized TraderAcc newTrader(String name) throws RemoteException, RejectedException {
+    public synchronized TraderAcc newTrader(String name,String password) throws RemoteException, RejectedException {
         
         
         
@@ -132,28 +132,16 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }
             
         if(em.getTransaction().isActive() ) {
-
-            UserDAO user = new UserDAO(name,name);
+            
+            if(password.length() < 8){
+                throw new RejectedException("Password must be atleast 8 char long");
+            }
+            UserDAO user = new UserDAO(name,password);
             em.persist(user);
             em.getTransaction().commit();
         }
         
-          
-       /* Collection <ItemDAO> i = em.find(UserDAO.class, "gurra").getItems();
-        for(ItemDAO o : i){
-           System.out.println(o.getName()); 
-        }
- */
         
-    	//Account exists
-        /*for(TraderAcc t : traderaccs){
-            if(t.getName().equals(name)){
-                throw new RejectedException("Rejected: se.kth.id2212.ex2.marketrmi: " + marketName + " Account for: " + name + " already exists");  
-            }
-        }*/
-        /*TraderAcc traderacc = new TraderAccImpl(name);
-        traderaccs.add(traderacc);
-        System.out.println("se.kth.id2212.ex2.marketrmi: " + marketName + " Account: " + traderacc + " has been created for " + name);*/
         return new TraderAccImpl(name);
     }
     
@@ -165,18 +153,24 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      */
     //implements interface
     @Override
-    public synchronized TraderAcc getTrader(String name) throws RejectedException {
+    public synchronized TraderAcc getTrader(String name,String password) throws RejectedException {
    
         
         EntityManager em = this.emFactory.createEntityManager();
         
         em.getTransaction().begin();
-        UserDAO delete = em.find(UserDAO.class, name);
-        if(delete != null) {
+        UserDAO user = em.find(UserDAO.class, name);
+        if(user != null) {
            
             try {
                 em.getTransaction().commit();
-                return new TraderAccImpl(name);
+                if(user.getPassword().equals(password)){
+                   return new TraderAccImpl(name); 
+                } 
+                else {
+                    throw new RejectedException("Wrong password for account");
+                }
+                
             } catch (RemoteException ex) {
                
             }
@@ -322,11 +316,22 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
 
     //TODO: Gustav verify if this could work..
     @Override
-    public synchronized String[] myActivities() {
+    public synchronized String[] myActivities(String name) throws RejectedException {
 
-        EntityManager em = this.emFactory.createEntityManager();
-
-        em.getTransaction().begin();
+        EntityManager em = emFactory.createEntityManager();
+        
+        
+        UserDAO user = em.find(UserDAO.class, name);
+        if(user == null){
+            throw new RejectedException("User does not exist");
+        }
+        
+        String[] out = new String[2]; // en plats för vardera egenskap
+        out[0] = "Items bought: " + Integer.toString(user.getItemBought());
+        out[1] = "Items sold: " + Integer.toString(user.getItemSold());
+        
+        
+       /* em.getTransaction().begin();
         List <Object> activities =  em.createQuery("SELECT itemsold, itembought FROM userdao").getResultList();
         String[] out = new String[activities.size()];
         int i = 0;
@@ -336,7 +341,7 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
                 out[i++] = t.getName();
             }
         }
-        em.getTransaction().commit();
+        em.getTransaction().commit();*/
         return out;
     }
     
