@@ -17,25 +17,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 
-/**  
- * TODO: Make BANK db persistent for account and balance. 
- * TODO: Make buy function persistent so it saves counts for sold and bought products.
- * TODO: Make password length requirements and persistent.
- * TODO: Make an "Activity Indicator" that lists sold and bought items.
- * TODO: Make new Command myActivities for activity indicator. 
- * TODO: Make newTrader so that it rejects already taken user names. 
-        sell                    OK 
-        buy                     TODO
-        wish                    TODO
-        listProducts            OK
-        listTraders             OK
-        newTrader               OK
-        getTrader               OK
-        deleteTrader            OK
-        myActivities            TODO
-        quit                    OK
-        help                    OK
- */
 
 /**
  * This is the servant class for the Market.java interface.
@@ -53,7 +34,8 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     private ArrayList<TraderAcc> traderaccs = new ArrayList<TraderAcc>();
     private Bank bank;
     
-    //Entity manager usage. Getting an EntityManagerFactory. 
+    //Entity manager usage. Getting an EntityManagerFactory. Måste ha Entity Manager Factory för att kunna skapa Entity Manager.
+    //Cascading the updates
     private  EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("market"); // koppling till vårt "persistence unit name"
     
     //startar rmi registret(som dns uppslagning) kopplingen mot banken
@@ -74,15 +56,16 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }
     }
     
-    //implements interface. TODO check if it works.
+    //implements interface.
     @Override
     public synchronized String[] listTraders() {
     	
-        
+        //chefen som hanterar våran entities 
         EntityManager em = this.emFactory.createEntityManager();
         
+        //Application managed transaction. Vi väljer när vi gör transaktionen.
         em.getTransaction().begin();
-        List <Object> result =  em.createQuery("SELECT a FROM userdao a").getResultList();
+        List <Object> result =  em.createQuery("SELECT a FROM userdao a").getResultList(); //Hämtar allting från userdao
         String[] out = new String[result.size()];
         int i = 0;
         for(Object o : result  ){
@@ -92,15 +75,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             }
         }
         em.getTransaction().commit();
-        
-        
-        
-        
-    	
-    	/*int i = 0;
-    	for(TraderAcc t : traderaccs){
-    		out[i++] = ((TraderAccImpl ) t).getName();
-    	}*/
         return out;
     }
     
@@ -111,24 +85,17 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
      * @return
      * @throws RejectedException 
      * interface implementation 
-     * TODO ta emot password i inparametern
      */
     @Override
     public synchronized TraderAcc newTrader(String name,String password) throws RemoteException, RejectedException {
         
-        
-        
-        //TODO lägg till kontroller för att se om användarnamnet är taget. Skapa en lista med List interface.
-        
         EntityManager em  = emFactory.createEntityManager(); // (hämtar en instans koppling till databasen) entitymanager behövs för att för persista data till databasen
-        
         em.getTransaction().begin(); //Startar transaktion. EntityManager Usage. At transaction start.
              
         //Ser om användare existerar i databas (avbryt då transaktion)
-        if( em.find(UserDAO.class, name)  != null) {
+        if( em.find(UserDAO.class, name) != null) {
             em.getTransaction().rollback();
             throw new RejectedException("User already exist");
-            //return null;?
         }
             
         if(em.getTransaction().isActive() ) {
@@ -138,12 +105,11 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             if(password.length() < 8){
                 throw new RejectedException("Password must be atleast 8 char long");
             }
+            //skapar ny användare
             UserDAO user = new UserDAO(name,password);
             em.persist(user);
             em.getTransaction().commit();
         }
-        
-        
         return new TraderAccImpl(name);
     }
     
@@ -156,7 +122,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     //implements interface
     @Override
     public synchronized TraderAcc getTrader(String name,String password) throws RejectedException {
-   
         
         EntityManager em = this.emFactory.createEntityManager();
         
@@ -178,21 +143,9 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             }
         }else {
             em.getTransaction().rollback();
-            
-        }
-        throw new RejectedException("Account " + name + " does not exist");
-       /* 
-        try {
-                for(TraderAcc t : traderaccs){
-                     if(t.getName().equals(name)){ //account found
-                        return t;  
-                     }
-                 } 
 
-        } catch (RemoteException e) {
-                e.printStackTrace();
-        }*/
-        
+        }
+        throw new RejectedException("Account " + name + " does not exist");        
     }
     
     //implements interface. TODO Check if it works.
@@ -211,21 +164,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             em.getTransaction().rollback();
             return false;
         }
-        
-       /* 
-        
-        try{
-            
-            for(TraderAcc t : traderaccs){
-                if(t.getName().equals(name)){ //account found
-                    traderaccs.remove(t);
-                    System.out.println("se.kth.id2212.ex2.marketrmi: " + marketName + " Account for " + name + " has been deleted");
-               return true;
-            }
-        } 
-        } catch (RemoteException ex) {
-            }
-        return false;*/
     }
 
     //list all products available on the market. This is working.
@@ -242,10 +180,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
             }
         }
         em.getTransaction().commit();
-       
-    	/*for(Item i : items){
-            out.add("Name: " + i.name() + " Price: " + i.price());
-    	}*/
         return out;
     }	
 
@@ -275,37 +209,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         }
         em.getTransaction().commit();
         return temp;
-//uppdatera 
-        
-        
-        
-        
-        /*
-        em.find(UserDAO.class, it.trader().getName()).incrSoldItems();//Seller
-        em.find(UserDAO.class, item.trader().getName()).incrBoughtItems();//Buyer 
-        
-        
-            int i = 0;
-            for(Item it: items) {
-                
-                //här säljs varan
-                if(it.name().equals(item.name()) && it.price() <= item.price()) {
-                    
-                    EntityManager em  = emFactory.createEntityManager(); // (hämtar en instans koppling till databasen) entitymanager behövs för att för persista data till databasen
-                    em.getTransaction().begin();   
-                    
-                    
-                    buyer.withdraw(it.price());
-                    bank.getAccount(it.trader().getName()).deposit(it.price());
-                    Item temp  = items.remove(i);
-                    temp.trader().itemSold(temp);
-                    
-                    em.getTransaction().commit();
-                    return temp;
-                }
-                i++;
-            }*/
-            
     }
 
     //implements interface TODO
@@ -347,16 +250,11 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         if(user == null) {
             em.getTransaction().rollback();
         } 
-        else {
+        else {  //säljer saker då vi har en användare
             user.addItem(new ItemDAO(user,item.name(),item.price()));
-            em.persist(user);
+            em.persist(user);       //cascading persist operation. Lägger till objektet.
             em.getTransaction().commit();
         }
-        
-          
-
-       
-       // items.add(item);
     }
 
     //implements myActivities interface for bought and sold items.
@@ -364,7 +262,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
     public synchronized String[] myActivities(String name) throws RejectedException {
 
         EntityManager em = emFactory.createEntityManager();
-        
         
         UserDAO user = em.find(UserDAO.class, name);
         if(user == null){
@@ -375,18 +272,6 @@ public class MarketImpl extends UnicastRemoteObject implements Market {
         out[0] = "Items bought: " + Integer.toString(user.getItemBought());
         out[1] = "Items sold: " + Integer.toString(user.getItemSold());
         
-        
-       /* em.getTransaction().begin();
-        List <Object> activities =  em.createQuery("SELECT itemsold, itembought FROM userdao").getResultList();
-        String[] out = new String[activities.size()];
-        int i = 0;
-        for(Object o : activities  ){
-            if(o instanceof UserDAO){
-                UserDAO t = ((UserDAO) o);
-                out[i++] = t.getName();
-            }
-        }
-        em.getTransaction().commit();*/
         return out;
     }
     

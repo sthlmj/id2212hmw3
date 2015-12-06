@@ -205,9 +205,8 @@ public class MClient {
                 return;
         }
 
-        // all further commands require a Account reference
-        
-        acc = market.getTrader(userName,session_password);
+        // all further commands require a Account reference. Skickar med lösenord när man hämtar trader.
+        acc = market.getTrader(userName, session_password);
         TraderAcc in = (TraderAcc) UnicastRemoteObject.exportObject(acc,0);
        
         if (acc == null) {
@@ -243,7 +242,6 @@ public class MClient {
                         System.out.println(activities);
                     }
                 } catch (Exception e) {
-                    //e.printStackTrace();
            
                 }
                 return;

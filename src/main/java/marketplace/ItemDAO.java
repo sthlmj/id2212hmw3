@@ -8,39 +8,36 @@ import java.io.Serializable;
  * @author Joe
  */
 
-//db table(entity) for item. Entity definition.
+//skapar relationen med db tabellen
 @Entity(name = "item")
 public class ItemDAO implements Serializable {
  
-    //Attributes for item entity.
+    //primär nyckeln
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itemId;
     
-    //Attributes for item entity.
+    //kolumn
     @Column(name = "name", nullable = false)
     private String name;
 
-    //Attributes for item entity.
+    //kolumn
     @Column(name = "price", nullable = false)
     private float price;
     
-    //Attributes for item entity.
+    //kolumn
     @Column(name = "amount", nullable = true)
     private int amount;
     
+    //kopplar ihop itemdao med userDAO tabellen. En ägare kan ha många produkter.
+    @ManyToOne
     @JoinColumn(name = "owner", nullable = true)
     private UserDAO owner;
-    /*@ManyToOne
-    private UserDAO owner;*/
-    
-    @ManyToOne
-    @JoinColumn(name="id", nullable=false)
-    public UserDAO getUserDAO(){
+
+     public UserDAO getUserDAO(){
         return owner;
     }
-    
     public ItemDAO()
     {
         
@@ -67,12 +64,11 @@ public class ItemDAO implements Serializable {
     }
     
     
-    //Entity, business logic.
-    @Id
+    //Entity, business logic. Hämtar itemID
     public Long getItemId() {
         return itemId;
     }
-    //Entity, business logic.
+    //Entity, business logic. Lagrar itemID
     public void setItemId(Long itemId) {
         this.itemId = itemId;
     }

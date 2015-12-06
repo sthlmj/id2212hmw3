@@ -15,28 +15,28 @@ import javax.persistence.OneToMany;
  * @author Joe
  */
 
-//db table(entity) for userdao. Entity definition.
+//skapar relationen med db tabellen
 @Entity(name="userdao")
 public class UserDAO implements Serializable {
     
-    //Attributes for item entity.
+    //primär nyckeln
     @Id
     @Column(name = "name", nullable = false)
     private String name;
     
-    //Attributes for item entity.
+    //kolumnen
     @Column(name = "password", nullable = false)
     private String password;
     
-    //Attributes for item entity.
+    //kolumn
     @Column(name = "itemBought", nullable = false)
     private int itemBought = 0;
     
-    //Attributes for item entity.
+    //kolumn
     @Column(name = "itemSold", nullable = false)
     private int itemSold = 0;
     
-   
+    //kopplar ihop userDAO med item tabellen
     @OneToMany(cascade=ALL,mappedBy="owner")
     private Collection<ItemDAO> items = new HashSet();
     
